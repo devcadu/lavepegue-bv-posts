@@ -1,0 +1,39 @@
+name: baixar-imagens
+# Baixa imagens de sites que o ambiente do Claude não acessa (ex.: export do Canva/ElevenLabs).
+# Cada arquivo em pedidos/*.txt tem linhas "destino|url". O destino é relativo à raiz do repositório.
+on:
+  push:
+    paths:
+      - "pedidos/**"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: baixar-imagens
+  cancel-in-progress: false
+jobs:
+  baixar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Baixar arquivos dos pedidos
+        run: |
+          shopt -s nullglob
+          for pedido in pedidos/*.txt; do
+            echo "Pedido: $pedido"
+            while IFS='|' read -r destino url || [ -n "$destino" ]; do
+              [ -z "$destino" ] && continue
+              case "$destino" in /*|*..*) echo "destino inválido: $destino"; continue;; esac
+              mkdir -p "$(dirname "$destino")"
+              curl -fsSL --retry 3 -o "$destino" "$url" && echo "ok $destino" || echo "FALHOU $destino"
+            done < "$pedido"
+            git rm -q "$pedido"
+          done
+      - name: Commit
+        run: |
+          git config user.name "baixar-imagens[bot]"
+          git config user.email "baixar-imagens@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "baixar-imagens: arquivos baixados"
+          git pull --rebase -q || true
+          git push
