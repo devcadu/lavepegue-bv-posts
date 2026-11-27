@@ -6,15 +6,11 @@ from icons import icon
 
 N = 6
 sl = [
-    # 1 — capa
-    s(1, N, "entrada-vitrine-01", "fade-bot",
-      '<div class="area" style="bottom:120px">'
-      + boxes(("cr", "Sem tempo durante o dia?"), ("mg big", "A loja"), ("mg big ind1", "não fecha."))
-      + '<div style="margin-top:44px;display:flex;justify-content:space-between;align-items:center">'
-        '<span class="lead" style="font-size:28px">Aberta 24h, todo dia</span>'
-        f'<span class="swipe">Arrasta {icon("arrow")}</span></div></div>'),
+    # 1 — capa (refeita 27/11: modelo novo, imagem de IA do tema)
+    capa_topo(N, "ia:ia-roupa-noite-01", "Aberta 24h", "Sem tempo de dia? <em>A loja não fecha.</em>",
+              "Cedo, depois do expediente ou de madrugada: você escolhe a hora", pos="center 60%"),
     # 2 — horários
-    s(2, N, "maquinas-tabela-02", "veil",
+    s(2, N, "ia:ia-cesto-roupas-01", "veil",
       '<div class="area" style="top:300px"><span class="eyebrow">Você escolhe a hora</span>'
       '<h2 class="h md" style="margin-top:14px">4 horários que <em>cabem</em> na rotina</h2>'
       '<div class="glass" style="margin-top:44px">'
