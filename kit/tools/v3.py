@@ -101,4 +101,5 @@ def capa_cor(n, foto, cor, tag, titulo_html, sub, pos=None):
             f'<div class="area" style="top:200px"><span class="tag {tg}">{tag}</span>'
             f'<h1 class="h" style="margin-top:28px">{titulo_html}</h1>'
             f'<p class="lead" style="margin-top:26px;max-width:560px;{lead}">{sub}</p></div>'
-            f'<div class="sw">{_swipe("Arrasta")}</div>{dots(1, n)}</section>')
+            f'<div class="sw">{_swipe("Arrasta")}</div>'
+            f'{dots(1, n).replace("class=\"dots\"", "class=\"dots dk\"") if cor == "cy" else dots(1, n)}</section>')
